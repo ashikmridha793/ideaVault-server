@@ -87,7 +87,7 @@ async function run() {
             as: "comments",
           },
         },
-        
+
         {
           $addFields: {
             interactionScore: {
@@ -126,6 +126,7 @@ async function run() {
   });
 
   app.post("/ideas", verifyToken, async (req, res) => {
+    
     const ideaData = {
       ...req.body,
       authorEmail: req.user.email,
@@ -134,32 +135,42 @@ async function run() {
       likes: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
-    };
+    }
+
     const result = await ideaCollection.insertOne(ideaData);
     res.json({ insertedId: result.insertedId, acknowledged: result.acknowledged });
+
   });
 
   app.get("/my-ideas", verifyToken, async (req, res) => {
+
     const result = await ideaCollection
       .find({ authorEmail: req.user.email })
       .sort({ createdAt: -1 })
       .toArray();
     res.send(result);
+
   });
 
   app.put("/idea/:id", verifyToken, async (req, res) => {
+
     try {
+
       const idea = await ideaCollection.findOne({ _id: new ObjectId(req.params.id) });
+
       if (!idea) return res.status(404).json({ message: "Idea not found" });
+
       if (idea.authorEmail !== req.user.email) {
         return res.status(403).json({ message: "Not allowed" });
       }
+
       const updateIdea = { ...req.body, updatedAt: new Date() };
       delete updateIdea._id;
       const result = await ideaCollection.updateOne(
         { _id: new ObjectId(req.params.id) },
         { $set: updateIdea }
-      );
+      )
+
       res.send(result);
     } catch {
       res.status(400).json({ message: "Invalid idea id" });
@@ -246,7 +257,7 @@ async function run() {
       try {
         objectIds.push(new ObjectId(id));
       } catch {
-        /* skip invalid ids */
+
       }
     }
     const ideas =
