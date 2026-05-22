@@ -61,7 +61,9 @@ function buildIdeasQuery(queryParams) {
 }
 
 async function run() {
-  await client.connect();
+
+  // await client.connect();
+
   const db = client.db("ideaVault");
   const ideaCollection = db.collection("ideas");
   const commentCollection = db.collection("comments");
@@ -126,7 +128,7 @@ async function run() {
   });
 
   app.post("/ideas", verifyToken, async (req, res) => {
-    
+
     const ideaData = {
       ...req.body,
       authorEmail: req.user.email,
@@ -153,7 +155,7 @@ async function run() {
   });
 
   app.put("/idea/:id", verifyToken, async (req, res) => {
-
+    
     try {
 
       const idea = await ideaCollection.findOne({ _id: new ObjectId(req.params.id) });
@@ -175,7 +177,8 @@ async function run() {
     } catch {
       res.status(400).json({ message: "Invalid idea id" });
     }
-  });
+  })
+
 
   app.delete("/idea/:id", verifyToken, async (req, res) => {
     try {
@@ -190,7 +193,7 @@ async function run() {
     } catch {
       res.status(400).json({ message: "Invalid idea id" });
     }
-  });
+  })
 
   app.post("/comment", verifyToken, async (req, res) => {
     const commentData = {
@@ -201,7 +204,8 @@ async function run() {
       userImage: req.user.image,
       createdAt: new Date(),
       updatedAt: new Date(),
-    };
+    }
+
     const result = await commentCollection.insertOne(commentData);
     res.json({ insertedId: result.insertedId, acknowledged: result.acknowledged });
   });
@@ -282,7 +286,8 @@ async function run() {
     res.send("IdeaVault API is running");
   });
 
-  await client.db("admin").command({ ping: 1 });
+  // await client.db("admin").command({ ping: 1 });
+
   console.log("Connected to MongoDB");
 
   app.listen(PORT, () => {
