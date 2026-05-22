@@ -13,8 +13,8 @@ const PORT = process.env.PORT || 8000;
 const JWT_SECRET = process.env.JWT_SECRET || process.env.BETTER_AUTH_SECRET || "ideavault-jwt-secret";
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+app.use(cors())
+app.use(express.json())
 
 
 const client = new MongoClient(uri, {
@@ -24,7 +24,8 @@ const client = new MongoClient(uri, {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  },
+  }
+
 });
 
 function verifyToken(req, res, next) {
