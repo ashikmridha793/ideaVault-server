@@ -73,7 +73,7 @@ async function run() {
     }
     const token = jwt.sign({ email, name, image }, JWT_SECRET, { expiresIn: "7d" });
     res.json({ token, user: { email, name, image } });
-  });
+  })
 
   app.get("/ideas/trending", async (req, res) => {
     const limit = Math.min(parseInt(req.query.limit, 10) || 6, 20);
@@ -87,6 +87,7 @@ async function run() {
             as: "comments",
           },
         },
+        
         {
           $addFields: {
             interactionScore: {
