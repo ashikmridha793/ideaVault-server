@@ -10,6 +10,7 @@ dotenv.config();
 
 const uri = process.env.MONGODB_URI_STANDARD || process.env.MONGODB_URI;
 const PORT = process.env.PORT || 8000;
+
 const JWT_SECRET = process.env.JWT_SECRET || process.env.BETTER_AUTH_SECRET || "ideavault-jwt-secret";
 
 const app = express();
