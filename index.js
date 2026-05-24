@@ -13,12 +13,14 @@ const PORT = process.env.PORT || 8000;
 
 const JWT_SECRET = process.env.JWT_SECRET || process.env.BETTER_AUTH_SECRET || "ideavault-jwt-secret";
 
-const app = express();
+const app = express()
+
 app.use(cors())
 app.use(express.json())
 
 
 const client = new MongoClient(uri, {
+  
   serverSelectionTimeoutMS: 15000,
   connectTimeoutMS: 15000,
   serverApi: {
